@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup List</title>
+    <!-- Add Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Add Font Awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Razorpay Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+
+<body class="bg-gray-100 font-sans text-gray-800">
+
+    <div class="max-w-7xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-3xl font-semibold text-indigo-600">
+                Startups List
+            </h1>
+        </div>
+
+        <!-- Startup List -->
+        <div id="startup-list" class="space-y-6">
+            {% for startup in startups %}
+            <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+                <div class="flex items-center space-x-4">
+                    <img src="{{ startup.logo.url }}" alt="{{ startup.name }} logo" class="w-16 h-16 object-cover rounded-full">
+                    <div class="flex-1">
+                        <h2 class="text-2xl font-semibold text-gray-800">{{ startup.name }} </h2>
+                        <p class="text-gray-500 mt-1">Founder Name: {{ startup.user.username}}</p>
+                        <p class="text-gray-500 mt-1">Info and Description: {{ startup.bio }} | {{ startup.description }}</p>
+                        <p class="text-gray-500 mt-1">Price per stock: ₹{{ startup.stockprice }}</p>
+                        <p class="text-gray-500 mt-1">Total Stocks: {{ startup.totalstock }}</p>
+                    </div>
+                    <button onclick="openBuyModal({{ startup.id }}, '{{ startup.name }}', {{ startup.stockprice }}, {{ startup.totalstock }})" class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fa fa-dollar"></i> Buy
+                    </button>                    
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Modal for Buying Stocks -->
+    <div id="buyModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white p-8 rounded-lg shadow-xl w-96">
+            <h2 id="startupName" class="text-2xl font-semibold text-gray-800 mb-4"></h2>
+            <p id="stockPrice" class="text-gray-500 mb-4"></p>
+
+            <!-- Form for number of stocks -->
+            <div class="mb-4">
+                <label for="numStocks" class="block text-gray-700 mb-2">Enter the number of stocks to buy:</label>
+                <input type="number" id="numStocks" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <button onclick="initiatePayment()" class="bg-indigo-600 text-white py-2 px-4 rounded-lg">Proceed to Payment</button>
+            <button onclick="closeBuyModal()" class="text-gray-500 mt-4">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedStartup = {};  // Object to hold details of the selected startup
+        const csrfToken = '{{ csrf_token }}';  // CSRF token for AJAX requests
+        const razorpayKey = "{{ settings.RAZOR_KEY_ID }}";  // Razorpay Key from Django settings
+    
+        // Function to open the buy modal with startup details
+        function openBuyModal(id, name, price, totalStock) {
+            selectedStartup = { id, name, price, totalStock };  // Store the selected startup details
+            document.getElementById("startupName").textContent = name;  // Set startup name in the modal
+            document.getElementById("stockPrice").textContent = `Price per stock: ₹${price}`;  // Set stock price in modal
+            document.getElementById("buyModal").classList.remove("hidden");  // Show modal
+        }
+    
+        // Function to close the buy modal
+        function closeBuyModal() {
+            document.getElementById("buyModal").classList.add("hidden");  // Hide modal
+        }
+    
+        // Function to initiate payment process when user confirms the number of stocks
+        function initiatePayment() {
+            const numStocks = parseInt(document.getElementById("numStocks").value);  // Get the number of stocks the user wants to buy
+    
+            // Validate the number of stocks
+            if (!numStocks || numStocks <= 0 || numStocks > selectedStartup.totalStock) {
+                alert("Please enter a valid number of stocks.");
+                return;
+            }
+    
+            const totalPrice = selectedStartup.price * numStocks;  // Calculate the total price for the stocks
+    
+            // Step 1: Create a Razorpay order (request backend for order creation)
+            fetch(`/payment/${selectedStartup.id}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken  // Include CSRF token in headers
+                },
+                body: JSON.stringify({ numStocks })  // Send the number of stocks selected by the user
+            })
+            .then(response => response.json())  // Parse the response JSON
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);  // Show error if the order creation failed
+                    return;
+                }
+    
+                // Step 2: Initialize Razorpay with order ID received from backend
+                const options = {
+                    "key": razorpayKey,  // Razorpay key passed dynamically from backend
+                    "amount": totalPrice * 100,  // Convert to paise (Razorpay expects amount in paise)
+                    "currency": "INR",  // Currency for payment
+                    "order_id": data.order_id,  // Order ID from backend
+                    "name": selectedStartup.name,  // Startup name
+                    "description": "Stock purchase",  // Payment description
+                    "image": "",  // Optionally, you can add logo URL
+                    "handler": function (response) {
+                        // Handle payment response when user completes the payment
+                        const paymentDetails = {
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_signature: response.razorpay_signature,
+                            startup_id: selectedStartup.id,
+                            num_stocks: numStocks  // Send the number of stocks purchased
+                        };
+    
+                        // Step 3: Verify the payment and update stock on the backend
+                        fetch('/payment/verify/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': csrfToken  // Include CSRF token in headers
+                            },
+                            body: JSON.stringify(paymentDetails)  // Send payment details to the backend
+                        })
+                        .then(response => response.json())  // Parse the response JSON
+                        .then(data => {
+                            if (data.success) {
+                                alert("Payment successful! Stocks have been purchased.");
+                            } else {
+                                alert(data.error || "Something went wrong!");  // Show error if verification fails
+                            }
+                        });
+                    },
+                    "prefill": {
+                        "name": "Customer Name",  // Prefill user details if available
+                        "email": "customer@example.com",  // Prefill email (you can replace it with dynamic values)
+                        "contact": "9999999999"  // Prefill contact (you can replace it with dynamic values)
+                    },
+                    "theme": {
+                        "color": "#F37254"  // Customize Razorpay theme color
+                    }
+                };
+    
+                var rzp1 = new Razorpay(options);  // Create Razorpay instance
+                rzp1.open();  // Open the Razorpay payment modal
+            })
+            .catch(error => {
+                alert("Error occurred while creating Razorpay order.");
+            });
+        }
+    </script>
+    
+</body>
+
+</html>

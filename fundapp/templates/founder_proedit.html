@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto p-8">
+        <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+            <h1 class="text-2xl font-semibold text-center text-red-600 mb-6">Edit Your Profile</h1>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- Name -->
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                    <input type="text" id="name" name="name" value="{{ edit.username }}" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500" required>
+                </div>
+
+                <!-- Profile Image -->
+                <div class="mb-4">
+                    <label for="image" class="block text-sm font-medium text-gray-700">Profile Picture</label>
+                    <input type="file" id="image" name="image" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 bg-gray-100 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500">
+                </div>
+
+                <!-- Password -->
+                <div class="mb-4">
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" name="password" value="{{ edit.password }}" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500" required>
+                </div>
+
+                <!-- Business Name -->
+                <!-- <div class="mb-4">
+                    <label for="business" class="block text-sm font-medium text-gray-700">Business Name</label>
+                    <input type="text" id="business" name="business" value="{{ edit.business }}" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500" required>
+                </div> -->
+
+                <!-- Bio -->
+                <div class="mb-4">
+                    <label for="bio" class="block text-sm font-medium text-gray-700">Bio</label>
+                    <textarea id="bio" name="bio" rows="4" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500">{{ edit.bio }}</textarea>
+                </div>
+
+                <!-- Save Button -->
+                <div class="flex justify-center">
+                    <button type="submit" class="px-6 py-3 bg-red-600 text-white text-lg font-semibold rounded-md hover:bg-red-500 transition duration-200">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

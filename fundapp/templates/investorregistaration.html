@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery.multiselect/css/jquery.multiselect.css">
+    <style>
+        /* Modern Red and White Theme with Smooth Gradient Background */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin-top: 50px;
+            padding: 0;
+            background: linear-gradient(to right, #e74c3c, #c0392b); /* Red gradient background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .main-heading {
+            color: #c0392b; /* Red for heading */
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .sub-heading {
+            color: #7f8c8d; /* Darker grey for subheading */
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        .input-field {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-field label {
+            font-size: 14px;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .input-field input, .input-field textarea, .input-field select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #e74c3c;
+            border-radius: 8px;
+            color: #333;
+            background-color: #f7f7f7;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .input-field input:focus, .input-field textarea:focus, .input-field select:focus {
+            border-color: #c0392b;
+            box-shadow: 0 0 10px rgba(192, 57, 43, 0.2);
+        }
+
+        .btn-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn.active {
+            background-color: #4207f4;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: #e74c3c; /* Adjusted color to red */
+            color: white; /* Text color to white */
+            border-radius: 8px;
+            border: none;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .acc-text {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 15px;
+        }
+
+        .acc-text a {
+            color: #e74c3c;
+            text-decoration: none;
+        }
+
+        .acc-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-heading">Investor Registration!</div>
+        <div class="sub-heading">Get started now</div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="input-field">
+                <label for="username">Full Name</label>
+                <input required autocomplete="off" type="text" name="username" id="username"/>
+            </div>
+
+            <div class="input-field">
+                <label for="email">Email</label>
+                <input required autocomplete="off" type="email" name="email" id="email"/>
+            </div>
+            <div class="input-field">
+                <label for="image">Profile Picture</label>
+                <input required autocomplete="off" type="file" name="image" id="image"/>
+            </div>
+            <div class="input-field">
+                <label for="phone">Phone Number</label>
+                <input required autocomplete="off" type="tel" name="phone" id="phone" pattern="^\d{1,10}$" maxlength="10">
+            </div>
+            <div class="input-field">
+                <label for="password">Password</label>
+                <input required autocomplete="off" type="password" name="password" id="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$" title="Need Upper Case, lowercase, spl character, and minimum 8 characters">
+            </div>
+            <div class="input-field">
+                <label for="bio">Biography:</label>
+                <textarea id="bio" name="bio" maxlength="200" placeholder="Tell us something about yourself..."></textarea>
+            </div>
+            <div class="input-field">
+                <label for="interested_sectors">Choose Interested Sectors:</label>
+                <div class="btn-container">
+                    <button type="button" class="btn sector-button" data-value="Automotives">Automotives</button>
+                    <button type="button" class="btn sector-button" data-value="Agriculture">Agriculture</button>
+                    <button type="button" class="btn sector-button" data-value="Technology">Technology</button>
+                    <button type="button" class="btn sector-button" data-value="Real Estate">Real Estate</button>
+                    <button type="button" class="btn sector-button" data-value="Healthcare">Healthcare</button>
+                    <button type="button" class="btn sector-button" data-value="Finance">Finance</button>
+                    <button type="button" class="btn sector-button" data-value="Education">Education</button>
+                    <button type="button" class="btn sector-button" data-value="Energy">Energy</button>
+                </div>
+                <input type="hidden" id="interested_sectors" name="interested_sectors">
+            </div>
+            <button type="submit" class="btn-submit">Register</button>
+            <div class="acc-text">
+                Already have an account? <a href="http://127.0.0.1:8000/investorlogin">Login here</a>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const buttons = document.querySelectorAll('.sector-button');
+            const hiddenInput = document.getElementById('interested_sectors');
+        
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.toggle('active'); // Toggle the 'active' class on click
+                    updateHiddenInput(); // Update the hidden input value
+                });
+            });
+        
+            function updateHiddenInput() {
+                const selectedValues = Array.from(document.querySelectorAll('.sector-button.active'))
+                                           .map(button => button.getAttribute('data-value')); // Get data-value of all active buttons
+                hiddenInput.value = selectedValues.join(', '); // Join them into a string and set as value of hidden input
+            }
+        });
+        </script>
+        
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .confirm {
+            background-color: red;
+            color: white;
+        }
+        .cancel {
+            background-color: gray;
+            color: white;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Delete Confirmation</h1>
+        <p>Are you sure you want to delete your account, {{ usr.username }}?</p>
+        <p>This action cannot be undone.</p>
+        <form action="/delete/" method="post">
+            {% csrf_token %}
+            <button type="submit" class="confirm">Confirm Delete</button>
+        </form>
+        <a href="/founder_home/"><button type="button" class="cancel">Cancel</button></a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Profile</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Include the script for calculating the total amount -->
+    <script>
+        function calculateTotalAmount() {
+            var totalAmount = 0;
+            var amounts = document.querySelectorAll('.amount-received');  // Select all the elements with class 'amount-received'
+            amounts.forEach(function(amount) {
+                totalAmount += parseFloat(amount.textContent);
+            });
+            document.getElementById('total-amount').textContent = totalAmount.toFixed(2);  // Display the total amount
+        }
+
+        // Call the calculateTotalAmount function after the page loads
+        window.onload = calculateTotalAmount;
+    </script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Main container -->
+    <div class="container mx-auto px-4 py-10">
+        <h2 class="text-3xl font-semibold text-center text-gray-700 mb-6">Investor Profile</h2>
+
+        {% if amt %}
+        <!-- Display Payment Information -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Payment History</h3>
+            
+            <!-- Payment Table -->
+            <table class="min-w-full table-auto">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Investment</th>
+                        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Amount Received</th>
+                        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date</th>
+                        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in amt %}
+                        <tr>
+                            <td class="border px-4 py-2 text-sm text-gray-600">{{ payment.investment }}</td>
+                            <td class="border px-4 py-2 text-sm text-gray-600 amount-received">{{ payment.amount_received }}</td>
+                            <td class="border px-4 py-2 text-sm text-gray-600">{{ payment.date }}</td>
+                            <td class="border px-4 py-2 text-sm text-gray-600">{{ payment.status }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Total Amount -->
+            <div class="mt-6 text-right">
+                <p class="text-lg font-semibold text-gray-800">Total Amount Received: $<span id="total-amount">0.00</span></p>
+            </div>
+        </div>
+
+        {% else %}
+            <p class="text-center text-lg text-gray-600">No payment data available.</p>
+        {% endif %}
+
+    </div>
+
+</body>
+</html>

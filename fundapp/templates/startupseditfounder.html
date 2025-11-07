@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Startup</title>
+    <!-- Add Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Add Font Awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 font-sans text-gray-800">
+
+    <div class="max-w-7xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-3xl font-semibold text-indigo-600">
+                Edit Startup Details
+            </h1>
+        </div>
+
+        <!-- Startup Edit Form -->
+        <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="startup_id" value="{{ edit.id }}">
+
+                <div class="mb-4">
+                    <label for="name" class="block text-gray-700">Startup Name</label>
+                    <input type="text" id="name" name="name" class="block w-full p-2 border border-gray-300 rounded mt-2" value="{{ edit.name }}" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="bio" class="block text-gray-700">Bio</label>
+                    <textarea id="bio" name="bio" class="block w-full p-2 border border-gray-300 rounded mt-2" required>{{ edit.bio }}</textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label for="description" class="block text-gray-700">Description</label>
+                    <textarea id="description" name="description" class="block w-full p-2 border border-gray-300 rounded mt-2" required>{{ edit.description }}</textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label for="logo" class="block text-gray-700">Logo</label>
+                    <input type="file" id="logo" name="logo" class="block w-full p-2 border border-gray-300 rounded mt-2">
+                    {% if edit.logo %}
+                        <p class="mt-2 text-gray-500">Current Logo: <img src="{{ edit.logo.url }}" alt="Logo" class="w-16 h-16 object-cover rounded-full"></p>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <label for="stockprice" class="block text-gray-700">Price per Stock</label>
+                    <input type="number" id="stockprice" name="stockprice" class="block w-full p-2 border border-gray-300 rounded mt-2" value="{{ edit.stockprice }}" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="totalstock" class="block text-gray-700">Total Stocks</label>
+                    <input type="number" id="totalstock" name="totalstock" class="block w-full p-2 border border-gray-300 rounded mt-2" value="{{ edit.totalstock }}" required>
+                </div>
+
+                <div class="flex justify-between mt-6">
+                    <button type="submit" class="btn bg-indigo-500 text-white px-4 py-2 rounded">Save Changes</button>
+                    <a href="/view_startups_user/" class="btn bg-gray-500 text-white px-4 py-2 rounded">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

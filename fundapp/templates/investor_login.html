@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<style>
+    /* Complete Red and White Theme with Gradient Background */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, #e74c3c, #c0392b); /* Red gradient background */
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form {
+        --background: #ffffff; /* White background */
+        --input-focus: #e74c3c; /* Soft red color for input focus */
+        --font-color: #c0392b; /* Red text */
+        --font-color-sub: #f1f1f1; /* Light grey for secondary text */
+        --bg-color: #ffffff; /* White background for the form */
+        --main-color: #c0392b; /* Dark red for borders and accents */
+        padding: 40px; /* Increased padding */
+        background: var(--background);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px; /* Reduced gap between elements */
+        border-radius: 5px;
+        border: 2px solid var(--main-color);
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+        width: 400px; /* Set a fixed width for desktop */
+        margin: auto; /* Center the form */
+        background-image: linear-gradient(135deg, #f9f9f9 25%, #e8e8e8 25%, #e8e8e8 50%, #f9f9f9 50%, #f9f9f9 75%, #e8e8e8 75%, #e8e8e8); 
+        background-size: 28.28px 28.28px; /* Subtle striped pattern in the background */
+    }
+
+    .form > p {
+        font-family: 'Arial', sans-serif;
+        color: var(--font-color);
+        font-weight: 700;
+        font-size: 24px; /* Increased font size */
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .form > p > span {
+        font-family: 'Space Mono', monospace;
+        color: var(--font-color);
+        font-weight: 600;
+        font-size: 18px; /* Increased font size */
+    }
+
+    .separator {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .separator > div {
+        width: 100px;
+        height: 3px;
+        border-radius: 5px;
+        background-color: var(--font-color-sub);
+    }
+
+    .separator > span {
+        color: var(--font-color);
+        font-family: 'Space Mono', monospace;
+        font-weight: 600;
+    }
+
+    .oauthButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        padding: 10px 20px; /* Adjusted padding */
+        width: 100%; /* Full width */
+        height: 50px; /* Increased height */
+        border-radius: 5px;
+        border: 2px solid var(--main-color);
+        background-color: var(--main-color); /* Red background */
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+        font-size: 18px; /* Increased font size */
+        font-weight: 600;
+        color: var(--font-color-sub); /* Light grey text */
+        cursor: pointer;
+        transition: all 250ms;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .oauthButton::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 0;
+        background-color: #b03929; /* Darker red */
+        z-index: -1;
+        box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+        transition: all 250ms;
+    }
+
+    .oauthButton:hover {
+        color: #e8e8e8;
+    }
+
+    .oauthButton:hover::before {
+        width: 100%;
+    }
+
+    .form > input {
+        width: 100%; /* Full width */
+        height: 50px; /* Increased height */
+        border-radius: 5px;
+        border: 2px solid var(--main-color);
+        background-color: var(--bg-color); /* White background for input */
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+        font-size: 16px; /* Increased font size */
+        font-weight: 600;
+        color: var(--font-color);
+        padding: 10px; /* Adjusted padding */
+        outline: none;
+    }
+
+    .form > input:focus {
+        border-color: var(--input-focus); /* Red border on focus */
+    }
+
+    .icon {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    a {
+        color: var(--main-color);
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    /* Register link styles inside the form */
+    .register-link {
+        margin-top: 10px; /* Reduced margin-top */
+        text-align: center;
+        font-size: 14px;
+        color: var(--font-color); /* Red color for link */
+    }
+
+    .register-link a {
+        color: var(--main-color);
+        text-decoration: none;
+    }
+
+    .register-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+<body>
+    <form action="" class="form" method="post">
+        {% csrf_token %}
+        <p>
+            Welcome back!<span>Login to your Investor account</span>
+        </p>
+        {% if msg %}
+        <p>{{msg}}</p>
+        {% endif %}
+        <input type="email" placeholder="Email" name="email" required>
+        <input type="password" placeholder="Password" name="password" required>
+        <button class="oauthButton" type="submit">
+            Continue
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m6 17 5-5-5-5"></path>
+                <path d="m13 17 5-5-5-5"></path>
+            </svg>
+        </button>
+
+        <!-- Register link inside the form -->
+        <div class="register-link">
+            <a href="/investerregistration/">Don't have an account? Register here</a>
+        </div>
+    </form>
+</body>
+</html>
+
+

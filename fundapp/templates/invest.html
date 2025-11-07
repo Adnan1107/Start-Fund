@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Founder List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Adding custom animation */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 min-h-screen flex items-center justify-center">
+
+    <div class="container mx-auto p-6 bg-white shadow-lg rounded-lg mt-10 max-w-5xl fade-in">
+        <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-6">Founder List</h1>
+
+        <!-- Search Bar -->
+        <input type="text" id="searchInput" placeholder="Search Founders..." 
+            onkeyup="searchTable()" 
+            class="w-full p-3 mb-6 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 ease-in-out">
+
+        <table class="w-full table-auto border-collapse">
+            <thead>
+                <tr class="bg-gradient-to-r from-blue-400 to-purple-500 text-left text-white">
+                    <th class="p-4 text-sm font-medium">Profile Picture</th>
+                    <th class="p-4 text-sm font-medium">Username</th>
+                    <th class="p-4 text-sm font-medium">Business</th>
+                    <th class="p-4 text-sm font-medium">Email</th>
+                    <th class="p-4 text-sm font-medium">Phone</th>
+                </tr>
+            </thead>
+            <tbody id="founderTableBody">
+                {% for user in investusr %}
+                <tr class="bg-white border-b hover:bg-gray-100 transition-colors duration-300 ease-in-out">
+                    <td class="p-4">
+                        {% if user.profilepic %}
+                            <img src="{{ user.profilepic.url }}" alt="Profile Picture" class="w-12 h-12 rounded-full border-2 border-purple-300 shadow-md hover:scale-105 transition-transform duration-200 ease-in-out">
+                        {% else %}
+                            <span>No Image</span>
+                        {% endif %}
+                    </td>
+                    <td class="p-4 text-gray-800">{{ user.username }}</td>
+                    <td class="p-4 text-gray-800">{{ user.business }}</td>
+                    <td class="p-4 text-gray-800">{{ user.email }}</td>
+                    <td class="p-4 text-gray-800">{{ user.phone }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Function to search through the table rows
+        function searchTable() {
+            let input = document.getElementById("searchInput");
+            let filter = input.value.toLowerCase();
+            let table = document.getElementById("founderTableBody");
+            let tr = table.getElementsByTagName("tr");
+
+            for (let i = 0; i < tr.length; i++) {
+                let td = tr[i].getElementsByTagName("td");
+                let found = false;
+
+                // Loop through each column (td) in the row and check if it matches the search query
+                for (let j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        let textValue = td[j].textContent || td[j].innerText;
+                        if (textValue.toLowerCase().indexOf(filter) > -1) {
+                            found = true;
+                            break; // Exit loop once a match is found
+                        }
+                    }
+                }
+
+                // Show or hide the row based on the search result
+                if (found) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

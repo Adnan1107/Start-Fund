@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>User Profile</title>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <style>
+            .top-right {
+                position: absolute;
+                right: 10px;
+                top: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <hr>
+        <div class="container bootstrap snippet">
+            <div class="row">
+                <div class="col-sm-10"><h1>{{ usr.username }}</h1></div>
+                <div class="col-sm-2 top-right">
+                    <a href="/investor_home/" class="btn btn-primary">Home</a> <!-- Home button linking to home page -->
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <ul class="nav nav-tabs">
+                    <!-- Tab links if needed -->
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="home">
+                        <hr>
+                        <form class="form" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="text-center">
+                                {% if usr.profilepic %}
+                                    <img src="{{ usr.profilepic.url }}" name="image" class="avatar img-circle img-thumbnail" alt="avatar" width="250px">
+                                {% else %}
+                                    <img src="{% static 'default_profile_pic.png' %}" class="avatar img-circle img-thumbnail" alt="avatar" width="250px">
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="username"><h4>Username</h4></label>
+                                    <input type="text" class="form-control" name="username" value="{{ usr.username }}" readonly id="username" placeholder="Username">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="phone"><h4>Phone</h4></label>
+                                    <input type="text" class="form-control" name="phone" value="{{ usr.phone }}" id="phone" placeholder="Enter phone" title="enter your phone number if any." readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="email"><h4>Email</h4></label>
+                                    <input type="email" class="form-control" name="email" value="{{ usr.email }}" id="email" placeholder="you@email.com" title="enter your email." readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="bio"><h4>Biography</h4></label>
+                                    <textarea class="form-control" name="bio" id="bio" value="{{ usr.bio }}" placeholder="Biography" readonly>{{ usr.bio }}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="interested_sectors"><h4>Interested Sectors</h4></label>
+                                    <textarea class="form-control" name="interested_sectors" id="interested_sectors" placeholder="Interested Sectors" readonly>{{ usr.interested_sectors }}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <a href="{% url 'investoredit' usr.id %}">Edit</a>
+                                </div>
+                                <div class="col-xs-12">
+                                    <br>
+                                    <a href="/indelete/">
+                                        <button class="btn btn-lg btn-danger" type="button">
+                                            <i class="glyphicon glyphicon-trash"></i> Delete
+                                        </button>
+                                    </a>
+                                </div>
+                                <div class="col-xs-12">
+                                    <br>
+                                    <a href="/amt/">
+                                             Balance
+                                    </a>
+                                </div>                                
+                            </div>
+                        </form>
+                    </div><!--/tab-pane-->
+                </div><!--/tab-content-->
+            </div><!--/col-9-->
+        </div><!--/row-->
+    </body>
+</html>

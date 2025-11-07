@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        /* Complete Red and White Theme with Gradient Background */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #e74c3c, #c0392b); /* Red gradient background */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            --background: #ffffff; /* White background for the container */
+            --input-focus: #e74c3c; /* Soft red color for input focus */
+            --font-color: #c0392b; /* Red text */
+            --font-color-sub: #f1f1f1; /* Light grey for secondary text */
+            --border-color: #e74c3c; /* Red color for borders */
+            padding: 40px;
+            background: var(--background);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px; /* Reduced gap between elements */
+            border-radius: 5px;
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            background-image: linear-gradient(135deg, #f9f9f9 25%, #e8e8e8 25%, #e8e8e8 50%, #f9f9f9 50%, #f9f9f9 75%, #e8e8e8 75%, #e8e8e8); 
+            background-size: 28.28px 28.28px; /* Subtle striped pattern in the background */
+        }
+
+        /* Main heading inside box */
+        .main-heading {
+            color: black; /* Black for main heading */
+            font-weight: 700;
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .sub-heading {
+            color: #333333; /* Dark grey for subheading */
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .input-field {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .input-field input {
+            height: 50px;
+            border-radius: 5px;
+            border: 2px solid var(--border-color); /* Red border */
+            background-color: #ffffff; /* White background for input */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--font-color);
+            padding: 10px;
+            outline: none;
+        }
+
+        .input-field input:focus {
+            border-color: var(--input-focus); /* Red border on focus */
+        }
+
+        .input-field label {
+            margin-top: 10px;
+            font-size: 14px;
+            color: black; /* Black color for input labels */
+        }
+
+        /* Reduced size for password input */
+        .input-field input#password {
+            height: 40px; /* Reduced height */
+            font-size: 14px; /* Reduced font size */
+            padding: 8px; /* Adjusted padding */
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .btn {
+            height: 50px;
+            width: 100%;
+            border-radius: 5px;
+            border: 2px solid var(--border-color); /* Red border for button */
+            background-color: #ffffff; /* White background for button */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--font-color);
+            cursor: pointer;
+            transition: all 250ms;
+        }
+
+        .btn:hover {
+            background-color: var(--input-focus); /* Red background on hover */
+            color: #ffffff; /* White text on hover */
+        }
+
+        .acc-text {
+            font-size: 14px;
+            color: var(--font-color-sub);
+        }
+
+        .acc-text span {
+            color: var(--input-focus); /* Red text for the link */
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--input-focus); /* Red text for the link */
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-heading">Register!</div>
+        <div class="sub-heading">Get started now</div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="input-field">
+                <label for="username">Full Name</label>
+                <input required autocomplete="off" type="text" name="username" id="username"/>
+            </div>
+            <!-- <div class="input-field">
+                <label for="businessname">Business Name</label>
+                <input required autocomplete="off" type="text" name="businessname" id="businessname"/>
+            </div> -->
+            <div class="input-field">
+                <label for="email">Email</label>
+                <input required autocomplete="off" type="email" name="email" id="email"/>
+            </div>
+            <div class="input-field">
+                <label for="image">Profile Picture</label>
+                <input required autocomplete="off" type="file" name="image" id="image"/>
+            </div>
+            <div class="input-field">
+                <label for="phone">Phone Number</label>
+                <input type="tel" name="phone" pattern="^[0-9]{10}$" placeholder="Enter your mobile number" required>
+            </div>
+            <div class="input-field">
+                <label for="password">Password</label>
+                <input required autocomplete="off" type="password" name="password" id="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$" title="Need Upper Case, lowercase, spl character, and minimum 8 characters"/>
+            </div>
+            <div class="input-field">
+                <label for="bio">Biography:</label>
+                <textarea id="bio" name="bio" maxlength="200" placeholder="Tell us something about yourself..."></textarea>
+            </div>
+            <br>
+            <br>
+            <div class="btn-container">
+                <button class="btn" type="submit">Register</button>
+                <div class="acc-text">
+                    <a href="/founderlogin/"> Already have an account? Login</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

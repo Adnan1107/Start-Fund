@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Founder Profile</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <style>
+        .top-right {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container bootstrap snippet">
+        <div class="row">
+            <!-- Header Row -->
+            <div class="col-sm-10">
+                <h1>{{ founder.username }}</h1>
+            </div>
+            <div class="col-sm-2 top-right">
+                <a href="/founder_home/" class="btn btn-primary">Home</a> <!-- Home button -->
+            </div>
+        </div>
+
+        <div class="col-sm-9">
+            <hr>
+            <!-- Profile Form -->
+            <form class="form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="text-center">
+                    {% if founder.profilepic %}
+                        <img src="{{ founder.profilepic.url }}" class="avatar img-circle img-thumbnail" alt="avatar" width="250px">
+                    {% else %}
+                        <img src="{% static 'default_profile_pic.png' %}" class="avatar img-circle img-thumbnail" alt="avatar" width="250px">
+                    {% endif %}
+                </div>
+                
+                <!-- Username -->
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="username"><h4>Username</h4></label>
+                        <input type="text" class="form-control" name="username" value="{{ founder.username }}" readonly id="username" placeholder="Username">
+                    </div>
+                </div>
+                
+                <!-- Email -->
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="email"><h4>Email</h4></label>
+                        <input type="email" class="form-control" name="email" value="{{ founder.email }}" id="email" placeholder="you@email.com" readonly>
+                    </div>
+                </div>
+                
+                <!-- Phone -->
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="phone"><h4>Phone</h4></label>
+                        <input type="text" class="form-control" name="phone" value="{{ founder.phone }}" id="phone" placeholder="Enter phone" readonly>
+                    </div>
+                </div>
+
+                <!-- Business Name -->
+                <!-- <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="businessname"><h4>Business Name</h4></label>
+                        <input type="text" class="form-control" name="businessname" value="{{ founder.businessname }}" id="businessname" placeholder="Business Name" readonly>
+                    </div>
+                </div> -->
+
+                <!-- Bio -->
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="bio"><h4>Biography</h4></label>
+                        <textarea class="form-control" name="bio" id="bio" placeholder="Biography" readonly>{{ founder.bio }}</textarea>
+                    </div>
+                </div>
+
+                <!-- Interested Sectors -->
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label for="interested_sectors"><h4>Interested Sectors</h4></label>
+                        <textarea class="form-control" name="interested_sectors" id="interested_sectors" placeholder="Interested Sectors" readonly>{{ founder.interested_sectors }}</textarea>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <a href="{% url 'edit_profile' founder.id %}" class="btn btn-warning">Edit Profile</a>
+                    </div>
+                    <div class="col-xs-12">
+                        <br>
+                        <a href="/fodelete/">
+                            <button class="btn btn-lg btn-danger" type="button">
+                                <i class="glyphicon glyphicon-trash"></i> Delete
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

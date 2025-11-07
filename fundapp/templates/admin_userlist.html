@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">User List</h1>
+
+        <!-- Search Input -->
+        <input type="text" id="searchInput" class="form-control mb-4" placeholder="Search by username, email or business" onkeyup="searchUsers()" />
+
+        <table class="table table-bordered table-striped mt-4">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Username</th>
+                    <th>Business</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Profile Picture</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                {% for user in usr %}
+                <tr class="user-row">
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.business }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td>
+                        {% if user.profilepic %}
+                        <img src="{{ user.profilepic.url }}" alt="Profile Picture" style="width: 50px; height: 50px; border-radius: 50%;">
+                        {% else %}
+                        <span>No Image</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No users found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Function to filter the user list based on the search input
+        function searchUsers() {
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let rows = document.querySelectorAll(".user-row");
+
+            rows.forEach(function(row) {
+                let username = row.cells[1].textContent.toLowerCase();
+                let business = row.cells[2].textContent.toLowerCase();
+                let email = row.cells[3].textContent.toLowerCase();
+
+                if (username.includes(input) || business.includes(input) || email.includes(input)) {
+                    row.style.display = "";  // Show the row if it matches the search
+                } else {
+                    row.style.display = "none";  // Hide the row if it doesn't match the search
+                }
+            });
+        }
+    </script>
+</body>
+</html>

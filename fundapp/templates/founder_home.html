@@ -1,0 +1,196 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Founder Dashboard - StartFund</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Founder dashboard for StartFund, where founders can list startups, find investors, and manage communications" name="description">
+    <meta content="founder, startups, investment, business, entrepreneur" name="keywords">
+
+    <!-- Favicon -->
+    <link href="{% static 'img/favicon.ico' %}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!-- Inline Styles for Red and White Theme -->
+    <style>
+        body, .bg-secondary {
+            background-color: #fff; /* White background */
+        }
+        .text-primary, .btn-primary, .navbar-brand {
+            color: #ff0000; /* Red text for primary elements */
+            background-color: #fff; /* White background for navbar brand */
+        }
+        .btn-primary:hover, .btn-secondary:hover {
+            background-color: #e60000; /* Slightly darker red for button hover */
+            color: #fff;
+        }
+        .btn-primary, .btn-secondary {
+            color: #fff;
+            background-color: #ff0000; /* Red background for buttons */
+        }
+        .navbar-light .navbar-brand, .navbar-light .nav-link {
+            color: #ff0000; /* Red text for navbar links */
+        }
+        .bg-primary, .footer {
+            background-color: #ff0000; /* Red footer */
+        }
+        .text-secondary {
+            color: #fff; /* White text in footer */
+        }
+        .footer .bi {
+            color: #fff; /* White icons in footer */
+        }
+    </style>
+</head>
+<body>
+    <!-- Topbar Start -->
+    <div class="container-fluid bg-secondary ps-5 pe-0 d-none d-lg-block">
+        <div class="row gx-0">
+            <div class="col-md-6 text-center text-lg-start mb-2 mb-lg-0">
+                <div class="d-inline-flex align-items-center">
+                    <a class="text-body py-2 pe-3 border-end" href=""><small>FAQs</small></a>
+                    <a class="text-body py-2 px-3 border-end" href=""><small>About us</small></a>
+                    <a class="text-body py-2 px-3" href=""><small>Contact</small></a>
+                </div>
+            </div>
+            <div class="col-md-6 text-center text-lg-end">
+                <div class="position-relative d-inline-flex align-items-center bg-primary text-white top-shape px-5">
+                    <div class="me-3 pe-3 border-end py-2">
+                        <p class="m-0"><i class="fa fa-envelope-open me-2"></i>info@startfund.com</p>
+                    </div>
+                    <div class="py-2">
+                        <p class="m-0"><i class="fa fa-phone-alt me-2"></i>+91 9380135747</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow-sm px-5 py-3 py-lg-0">
+        <a href="/founder_home/" class="navbar-brand p-0">
+            <h1 class="m-0 text-uppercase"><i class="far fa-lightbulb me-2"></i>StartFund</h1>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-0">
+                <a href="founder_home/" class="nav-item nav-link active">Home</a>
+                <a href="/founder_pro/" class="nav-item nav-link">Profile</a>
+                <a href="/submit_contact/" class="nav-item nav-link">Contact</a>
+           
+                <a href="/addstartup/" class="nav-item nav-link">Add Startups</a>
+            </div>
+        
+            <div class="d-flex align-items-center ms-4">
+                <a href="/view_startups_user/" class="btn btn-primary me-2">Your Startups</a>
+                <a href="/investors/" class="btn btn-secondary">Find Investors</a>
+                <button class="btn btn-secondary ms-2" onclick="window.location.href='http://127.0.0.1:8000/chat/'">Messages</button>
+            </div>
+        </div>
+        <div class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Settings</a>
+            <div class="dropdown-menu m-0">
+
+                <a href="/founder_pro/" class="dropdown-item"><img src="{{usr.profilepic.url}}" width="25px" height="25px" style="border-radius: 50%;"> Profile</a>
+                <a href="/logout/" class="dropdown-item">Logout </a>
+                </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Hero Section Start -->
+    <div class="container-fluid bg-secondary mb-5">
+        <div class="row align-items-center" style="height: 400px;">
+            <div class="col-md-6 text-center text-md-start">
+                <h1 class="display-3" style="color: #ff0000;">Empower Your Startup</h1>
+                <p>Connect with investors, expand your network, and secure funding to fuel your growth. StartFund offers a unique platform to showcase your innovative ideas to potential investors.</p>
+                <a href="/addstartup/" class="btn btn-primary py-md-3 px-md-5 me-3 rounded-pill">List Now</a>
+                <a href="/investors/" class="btn btn-secondary py-md-3 px-md-5 rounded-pill">Find Investors</a>
+            </div>
+            <br>
+            <br>
+            <div class="col-md-6 text-center">
+                <img class="img-fluid" src="{% static 'img/Steve-Jobs-PNG-Clipart.png' %}" alt="Founder Dashboard">
+            </div>
+        </div>
+    </div>
+    <!-- Hero Section End -->
+
+    <!-- Why Raise Funds Section Start -->
+    <div class="container text-center mt-5">
+        <h2 class="mb-4" style="color: #ff0000;">Why You Should Raise Funds Through StartFund?</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <img src="{% static 'img/pngtree-global-network-png-png-image_11575941.png' %}" alt="Access to Investors" class="img-fluid rounded-circle mb-3" style="width: 140px; height: 140px;">
+                <h4>Global Network</h4>
+                <p>Access a global network of investors ready to fund promising startups.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <img src="{% static 'img/pngtree-scalable-computing-icon-for-your-project-png-image_1555874.jpg' %}" alt="Scale Fast" class="img-fluid rounded-circle mb-3" style="width: 140px; height: 140px;">
+                <h4>Fast Scaling</h4>
+                <p>Get the resources to scale your operations rapidly and efficiently.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <img src="{% static 'img/1189156.png' %}" alt="Strategic Support" class="img-fluid rounded-circle mb-3" style="width: 140px; height: 140px;">
+                <h4>Strategic Support</h4>
+                <p>Gain insights and advice from experienced investors and business strategists.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Why Raise Funds Section End -->
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-primary text-secondary p-5">
+        <div class="row g-5">
+            <div class="col-lg-3 col-md-6">
+                <h3 class="text-white mb-4">Quick Links</h3>
+                <a class="text-secondary mb-2" href="founderindex.html"><i class="bi bi-house-door-fill text-white me-2"></i>Home</a>
+                <a class="text-secondary mb-2" href="about.html"><i class="bi bi-info-circle-fill text-white me-2"></i>About Us</a>
+                <a class="text-secondary" href="contact.html"><i class="bi bi-telephone-fill text-white me-2"></i>Contact Us</a>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h3 class="text-white mb-4">Get In Touch</h3>
+                <p class="mb-2"><i class="bi bi-geo-alt-fill text-white me-2"></i>123 Street, New York, USA</p>
+                <p class="mb-2"><i class="bi bi-envelope-fill text-white me-2"></i>info@startfund.com</p>
+                <p><i class="bi bi-telephone-fill text-white me-2"></i>+012 345 67890</p>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <h3 class="text-white mb-4">Stay Updated</h3>
+                <form class="d-flex">
+                    <input type="text" class="form-control border-white p-3" placeholder="Your Email">
+                    <button class="btn btn-dark px-4">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

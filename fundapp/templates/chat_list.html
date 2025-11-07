@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat List</title>
+    <!-- Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+        function searchUsers() {
+            const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+            const userElements = document.querySelectorAll(".user");
+
+            userElements.forEach(user => {
+                const username = user.textContent.toLowerCase();
+                if (username.includes(searchTerm)) {
+                    user.style.display = "";
+                } else {
+                    user.style.display = "none";
+                }
+            });
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-900 p-6">
+
+    <h1 class="text-3xl font-bold mb-6 text-center">Chat List</h1>
+
+    <!-- Search Input -->
+    <div class="mb-6 flex justify-center">
+        <input
+            type="text"
+            id="searchInput"
+            oninput="searchUsers()"
+            placeholder="Search Users..."
+            class="p-3 w-80 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+    </div>
+
+    <div class="user-list mb-8">
+        <h2 class="text-2xl font-semibold mb-4">Investors</h2>
+        {% for artist in investors %}
+            <div class="user bg-gray-200 p-4 mb-2 rounded-lg shadow hover:bg-blue-50">
+                <a href="{% url 'chat_detail' 'investor' artist.username %}" class="text-blue-600 hover:text-blue-800 font-semibold">
+                    {{ artist.username }}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="user-list">
+        <h2 class="text-2xl font-semibold mb-4">Founders</h2>
+        {% for buyer in founders %}
+            <div class="user bg-gray-200 p-4 mb-2 rounded-lg shadow hover:bg-blue-50">
+                <a href="{% url 'chat_detail' 'founder' buyer.username %}" class="text-blue-600 hover:text-blue-800 font-semibold">
+                    {{ buyer.username }}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

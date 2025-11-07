@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .card {
+            margin-bottom: 20px;
+        }
+        .profile-pic {
+            max-width: 100px;
+            border-radius: 50%;
+        }
+        .investor-card {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h2>Investor Details</h2>
+        <div class="row">
+            {% for investor in investors %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body investor-card">
+                            <!-- Profile Picture -->
+                            {% if investor.profilepic %}
+                                <img src="{{ investor.profilepic.url }}" class="profile-pic mb-3" alt="Profile Picture">
+                            {% else %}
+                                <img src="https://via.placeholder.com/100" class="profile-pic mb-3" alt="Placeholder">
+                            {% endif %}
+                            <!-- Investor Details -->
+                            <h5 class="card-title">{{ investor.username }}</h5>
+                            <p class="card-text">
+                                <strong>Email:</strong> {{ investor.email }}<br>
+                                <strong>Phone:</strong> {{ investor.phone }}<br>
+                                <strong>Bio:</strong> {{ investor.bio }}<br>
+                                <strong>Interested Sectors:</strong> {{ investor.interested_sectors }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (Optional, for extra functionalities like modals, tooltips, etc.) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
